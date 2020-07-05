@@ -8,6 +8,7 @@ app.use(async (ctx, next) => {
   // ctx.request koa封装的
   // ctx.res
   // ctx.response
+  ctx.state.user = {name:"ories"}
   await next();
   const time = ctx.response.get('X-Response-Time');
   console.log(`${ctx.url} - ${time}`);
