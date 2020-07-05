@@ -4,11 +4,20 @@ const app = new Koa();
 
 // 记录开始到写完hello world整个的用时
 app.use(async (ctx, next) => {
-  // ctx.req node封装的
-  // ctx.request koa封装的
-  // ctx.res
-  // ctx.response
-  ctx.state.user = {name:"ories"}
+  // ctx.body = 'hi'
+  // ctx.response.body = 'hi'
+  // 称ctx是response的委托
+  // 委托模式的源代码实现
+  Object.defineProperty(ctx, 'body', {
+    get(){
+      return ctx.response.body
+    },
+    set(v){
+      ctx.response.body = v
+    }
+  })
+
+
   await next();
   const time = ctx.response.get('X-Response-Time');
   console.log(`${ctx.url} - ${time}`);
