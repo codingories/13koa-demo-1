@@ -4,7 +4,10 @@ const app = new Koa();
 
 // 记录开始到写完hello world整个的用时
 app.use(async (ctx, next) => {
-  // 空
+  // ctx.req node封装的
+  // ctx.request koa封装的
+  // ctx.res
+  // ctx.response
   await next();
   const time = ctx.response.get('X-Response-Time');
   console.log(`${ctx.url} - ${time}`);
