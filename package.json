@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "express": "^4.17.1",
-    "koa": "^2.13.0"
+    "koa": "^2.13.0",
+    "response-time": "^2.3.2"
   },
   "devDependencies": {
     "@types/koa": "^2.11.3"
