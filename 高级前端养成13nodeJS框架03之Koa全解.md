@@ -93,3 +93,85 @@ app.use(async (ctx, next) => {
   - 思路一: 用两个 app.use 加 res.locals
   - 思路二: 搜业界方案，看源码
   - 推荐带着问题看源码,tj 做了两件事情，1.记录开始时间 process.hrtime(startAt)，2.调用 onHeader 库知道用户什么时候写 header,
+
+9. koa 的 api
+
+   - app.xxx // application
+     - [文档](https://koajs.com/#application)
+     - API
+       - app.env
+       - app.proxy
+       - app.subdomainOffset
+       - app.listen()
+       - app.callback()
+       - **app.use(fn)--插入中间件**
+       - app.keys
+       - app.context 见 ctx
+       - **app.on('error',fn)--错误处理**
+       - **app.emit--触发时间**
+   - ctx.xxx // context
+
+     - [文档](https://koajs.com/#context)
+     - API
+
+       - ctx.req // Node.js 封装的请求
+       - ctx.res
+       - ctx.request // KOA 封装的 js 请求
+       - crx.response
+       - crx.state--跨中间件分享数据
+       - ctx.app
+       - ctx.cookies.get/set
+       - ctx.throw
+       - ctx.assert
+       - ctx.respond 不推荐使用
+       - request 委托，response 委托
+
+         ```
+          // ctx.body = 'hi'
+          // ctx.response.body = 'hi'
+          // 称ctx是response的委托
+          // 委托模式的源代码实现
+         Object.defineProperty(ctx, 'body', {
+           get(){
+             return ctx.response.body
+           },
+           set(v){
+             ctx.response.body = v
+           }
+         })
+         ```
+
+       - 建议直接用真实的方法，因为容易混
+
+10. ctx.request.xxx
+
+- request.method
+- request.path
+- request.query
+- request.idempotent,幂等，多次操作是否会有一样的影响。get 有，get 获取几次都一样。post,一遍两遍是不一样的。幂等不管多少次都一样，http 中常用只有 get 是幂等的，还有 option
+- request.get(field)
+
+11. ctx.response.xxx
+    -response.status
+    -response.body*5,string 字符串，buffer 文件读到内存里就是 Buffer,也就是没有文件编码的内容,Stream 流，json 化的 Object,null
+    -response.set()*2 key value 和对象
+    -response.append()，添加响应头
+
+12. 总结
+
+- Koa 原理
+  - 封装请求和响应
+  - 通过 U 型模型
+- 跟 Express 的区别
+  - 模型不同
+  - 语法特性不同 7.6.0 版本之后完全支持
+  - 没有内置中间件
+- Koa API
+  - 平平无奇，几乎和 Express 一样
+
+13. 谁在用 Koa
+
+- egg.js
+- next.js(推荐)/NUXT/Nest
+
+14. [案例代码](https://github.com/codingories/13koa-demo-1)
