@@ -8,15 +8,15 @@ app.use(async (ctx, next) => {
   // ctx.response.body = 'hi'
   // 称ctx是response的委托
   // 委托模式的源代码实现
-  Object.defineProperty(ctx, 'body', {
-    get(){
-      return ctx.response.body
-    },
-    set(v){
-      ctx.response.body = v
-    }
-  })
-
+  // Object.defineProperty(ctx, 'body', {
+  //   get(){
+  //     return ctx.response.body
+  //   },
+  //   set(v){
+  //     ctx.response.body = v
+  //   }
+  // })
+  //
 
   await next();
   const time = ctx.response.get('X-Response-Time');
